@@ -3,6 +3,7 @@ import os
 
 RUTA = "notas.json"
 
+#Carga las notas si existen, de lo contrario retorna un array vacio
 def cargar_notas():
 
     if os.path.exists(RUTA):
@@ -15,10 +16,13 @@ def cargar_notas():
         return []
 
 
+#Guarda las notas
 def guardar_notas(notas):
     with open(RUTA, "w") as f:
         json.dump(notas, f, indent = 4 )
 
+
+#Pide titulo y contenido para luego agragar al archivo de notas
 def agregar_nota(notas):
     titulo = input("Dime el titulo que quieres colocarle: ")
     contenido = input("Contenido: ")
@@ -26,11 +30,14 @@ def agregar_nota(notas):
     notas.append(contenido_agregado)
     guardar_notas(notas)
 
+#Muestra todas las notas que contiene el archivo 
 def mostrar_notas(notas):
     for nota in notas: 
         print("Titulo: ", nota["titulo"])
         print("Contenido: ", nota["contenido"])
 
+
+#Elimina las notas que contiene el archivo, no asi el archivo
 def eliminar_notas():
 
     confirmacion = input("Usted desea eliminar todas las notas? ").lower()
@@ -42,6 +49,8 @@ def eliminar_notas():
     else: 
         print("Operacion cancelada")
 
+
+#Comienza el bucle para consultar sobre las opciones que desea realizar
 while True:
     print("1- Agregar notas: ")
     print("2- Ver todas las notas ")
@@ -61,3 +70,6 @@ while True:
         eliminar_notas()
     else:
         print("Error")
+
+
+print("Estoy practicando!")

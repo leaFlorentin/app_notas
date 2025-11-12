@@ -1,7 +1,52 @@
 import json
 import os
 
+
 RUTA = "notas.json"
+
+
+#Carga el usuario si existen, de lo contrario retorna un array vacio
+def cargar_usuario():
+    if os.path.exists(RUTA):
+        try:
+            with open(RUTA, "r") as l:
+                return json.load(l)
+        except json.JSONDecodeError:
+            return []
+
+# Guarda el nuevo usuario creado en el json
+def guardar_usuario(usuario):
+    with open(RUTA, "w") as f:
+        json.dump(usuario, f, indent=4)
+
+
+
+#El usuario inicia sesion, con cuenta ya creada dentro del json
+def iniciar_sesion(usuario):
+    nombre = input("Digame su nombre de ususario: ")
+    contraseña  = input("Digame su contraseña")
+
+    if nombre in usuario and usuario [nombre][contraseña] == contraseña:
+        print(f"Bienvenido {nombre} a tu bloc de notas")
+    else:
+        print("nombre o contraseña invalida")
+        
+
+
+
+#Crea un usuario nuevo, para luego guardarlo 
+def crear_usuario(usuario):
+    nombre = input("Ingresar el nombre que desea ponerse: ")
+    if nombre in usuario : 
+        print("El usuario aya esta en uso")
+        return None
+    contraseña = input("Ingrese una contraseña:" )
+    usuario[nombre] = {"contraseña": contraseña, "nota":[]}
+    guardar_usuario(usuario)
+    print("Usuario creado!!!")
+    return nombre
+
+
 
 #Carga las notas si existen, de lo contrario retorna un array vacio
 def cargar_notas():
@@ -16,10 +61,13 @@ def cargar_notas():
         return []
 
 
+
 #Guarda las notas
 def guardar_notas(notas):
     with open(RUTA, "w") as f:
         json.dump(notas, f, indent = 4 )
+
+
 
 
 #Pide titulo y contenido para luego agragar al archivo de notas
@@ -29,6 +77,7 @@ def agregar_nota(notas):
     contenido_agregado = {"titulo": titulo, "contenido": contenido}
     notas.append(contenido_agregado)
     guardar_notas(notas)
+
 
 #Muestra todas las notas que contiene el archivo 
 def mostrar_notas(notas):
@@ -52,6 +101,25 @@ def eliminar_notas():
 
 #Comienza el bucle para consultar sobre las opciones que desea realizar
 while True:
+
+    print("A- Iniciar sesion")
+    print("B- Crear cuenta")
+    print("C - Salir")
+    
+    opcion_elegida = int(input("Seleccione una opcion: ")).lower()
+    usuario = cargar_usuario()
+
+    if opcion_elegida == "a": 
+        iniciar_sesion(usuario)
+    elif opcion_elegida == "b":
+        crear_usuario(usuario)
+    elif opcion_elegida == "c": 
+        print("Adios!")
+        break
+    else: 
+        print("Opcion invalida")
+
+""" 
     print("1- Agregar notas: ")
     print("2- Ver todas las notas ")
     print("3- Eliminar todas las notas ")
@@ -71,5 +139,4 @@ while True:
     else:
         print("Error")
 
-
-print("Estoy practicando!")
+"""
